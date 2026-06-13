@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ふわっと STOCK WATCH Ver2</title>
+  <title>ふわっと STOCK WATCH</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
     <header>
       <h1>🌸 ふわっと STOCK WATCH</h1>
-      <p>実取引・WATCH・シミュレーション・銘柄別まとめ</p>
+      <p>実取引・WATCH・シミュレーション・成績表</p>
     </header>
 
     <nav class="tabs">
@@ -18,30 +18,23 @@
       <button class="tab" onclick="showTab(event, 'watch')">WATCH</button>
       <button class="tab" onclick="showTab(event, 'sim')">シミュレーション</button>
       <button class="tab" onclick="showTab(event, 'summary')">銘柄別まとめ</button>
+      <button class="tab" onclick="showTab(event, 'stats')">成績表</button>
     </nav>
 
     <section id="trade" class="tab-content active">
       <div class="summary-box">
-        <div>
-          <span>合計損益</span>
-          <strong id="totalProfit">0円</strong>
-        </div>
-        <div>
-          <span>取引数</span>
-          <strong id="tradeCount">0件</strong>
-        </div>
+        <div><span>確定した合計損益</span><strong id="totalProfit">0円</strong></div>
+        <div><span>実取引数</span><strong id="tradeCount">0件</strong></div>
       </div>
 
       <div class="card">
         <h2>実際に買った株を記録</h2>
-
         <input id="stockName" type="text" placeholder="銘柄名 例：東京エレクトロン" />
 
-        <label>取引日</label>
-        <input id="tradeDate" type="date" />
+        <label>買った日</label>
+        <input id="tradeBuyDate" type="date" />
 
         <input id="buyPrice" type="number" placeholder="買値" />
-        <input id="sellPrice" type="number" placeholder="売値" />
         <input id="quantity" type="number" placeholder="株数" />
 
         <select id="tradeFeeling">
@@ -52,28 +45,26 @@
           <option value="😭 焦ってしまった">😭 焦ってしまった</option>
         </select>
 
-        <textarea id="memo" placeholder="なぜ買った？なぜ売った？反省点や良かった点"></textarea>
-
-        <button onclick="addTrade()">実取引を記録する</button>
+        <textarea id="memo" placeholder="なぜ買った？買った時の理由・感情メモ"></textarea>
+        <button onclick="addTrade()">買った株を記録する</button>
       </div>
 
-      <h2>取引履歴</h2>
+      <h2>実取引履歴</h2>
       <div id="tradeList"></div>
     </section>
 
     <section id="watch" class="tab-content">
       <div class="card">
         <h2>気になる株メモ</h2>
-
         <input id="watchName" type="text" placeholder="銘柄名 例：ANYCOLOR" />
 
         <label>記録日</label>
         <input id="watchDate" type="date" />
 
         <input id="watchPrice" type="number" placeholder="見ている株価" />
-        <input id="targetBuyPrice" type="number" placeholder="買いたい価格 例：2500" />
-        <input id="takeProfitPrice" type="number" placeholder="利確目安 例：3000" />
-        <input id="stopLossPrice" type="number" placeholder="損切り目安 例：2300" />
+        <input id="targetBuyPrice" type="number" placeholder="買いたい価格" />
+        <input id="takeProfitPrice" type="number" placeholder="利確目安" />
+        <input id="stopLossPrice" type="number" placeholder="損切り目安" />
 
         <select id="watchStatus">
           <option value="👀 様子見">👀 様子見</option>
@@ -83,8 +74,7 @@
           <option value="⭐ お気に入り">⭐ お気に入り</option>
         </select>
 
-        <textarea id="watchMemo" placeholder="気になる理由・ニュース・チャートの印象・買いたい条件"></textarea>
-
+        <textarea id="watchMemo" placeholder="気になる理由・ニュース・チャートの印象"></textarea>
         <button onclick="addWatch()">WATCHに追加する</button>
       </div>
 
@@ -94,19 +84,12 @@
 
     <section id="sim" class="tab-content">
       <div class="summary-box">
-        <div>
-          <span>確定した仮想損益</span>
-          <strong id="simTotalProfit">0円</strong>
-        </div>
-        <div>
-          <span>シミュレーション数</span>
-          <strong id="simCount">0件</strong>
-        </div>
+        <div><span>確定した仮想損益</span><strong id="simTotalProfit">0円</strong></div>
+        <div><span>シミュレーション数</span><strong id="simCount">0件</strong></div>
       </div>
 
       <div class="card">
-        <h2>買ったつもりシミュレーション開始</h2>
-
+        <h2>買ったつもりシミュレーション</h2>
         <input id="simName" type="text" placeholder="銘柄名 例：東京エレクトロン" />
 
         <label>買ったと仮定した日</label>
@@ -124,7 +107,6 @@
         </select>
 
         <textarea id="simMemo" placeholder="なぜ買ったつもり？検証したいこと"></textarea>
-
         <button onclick="addSimulation()">シミュレーション開始</button>
       </div>
 
@@ -135,19 +117,36 @@
     <section id="summary" class="tab-content">
       <h2>銘柄別まとめ</h2>
       <div id="stockSummaryList"></div>
+
+      <div class="card">
+        <div id="backupReminder"></div>
+        <h2>バックアップ</h2>
+        <p class="memo">データを書き出したり、保存したバックアップを読み込めます。</p>
+        <button onclick="exportBackup()">バックアップを書き出す</button>
+
+        <label class="small-btn file-label">
+          バックアップを読み込む
+          <input type="file" id="backupFile" accept=".json" onchange="importBackup(event)" hidden>
+        </label>
+      </div>
+    </section>
+
+    <section id="stats" class="tab-content">
+      <h2>📊 ふわっと投資家成績表</h2>
+      <div id="statsList"></div>
     </section>
   </div>
 
-<div id="editModal" class="modal hidden">
-  <div class="modal-content">
-    <h2 id="editModalTitle">編集</h2>
-    <div id="editFields"></div>
-
-    <button onclick="saveEdit()">保存する</button>
-    <button class="delete-btn" onclick="deleteEditingItem()">削除する</button>
-    <button class="small-btn" onclick="closeEditModal()">閉じる</button>
+  <div id="editModal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="editModalTitle">編集</h2>
+      <div id="editFields"></div>
+      <button onclick="saveEdit()">保存する</button>
+      <button class="delete-btn" onclick="deleteEditingItem()">削除する</button>
+      <button class="small-btn" onclick="closeEditModal()">閉じる</button>
+    </div>
   </div>
-</div>
+
   <script src="script.js"></script>
 </body>
 </html>
