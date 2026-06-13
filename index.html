@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ふわっと STOCK WATCH</title>
+  <title>ふわっと STOCK WATCH Pro</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>🌸 ふわっと STOCK WATCH</h1>
+      <h1>🌸 ふわっと STOCK WATCH Pro</h1>
       <p>実取引・WATCH・シミュレーション・成績表</p>
     </header>
 
@@ -30,13 +30,10 @@
       <div class="card">
         <h2>実際に買った株を記録</h2>
         <input id="stockName" type="text" placeholder="銘柄名 例：東京エレクトロン" />
-
         <label>買った日</label>
         <input id="tradeBuyDate" type="date" />
-
         <input id="buyPrice" type="number" placeholder="買値" />
         <input id="quantity" type="number" placeholder="株数" />
-
         <select id="tradeFeeling">
           <option value="😊 落ち着いて判断できた">😊 落ち着いて判断できた</option>
           <option value="✨ 自信あり">✨ 自信あり</option>
@@ -44,7 +41,6 @@
           <option value="🔥 勢いで買った">🔥 勢いで買った</option>
           <option value="😭 焦ってしまった">😭 焦ってしまった</option>
         </select>
-
         <textarea id="memo" placeholder="なぜ買った？買った時の理由・感情メモ"></textarea>
         <button onclick="addTrade()">買った株を記録する</button>
       </div>
@@ -57,15 +53,12 @@
       <div class="card">
         <h2>気になる株メモ</h2>
         <input id="watchName" type="text" placeholder="銘柄名 例：ANYCOLOR" />
-
         <label>記録日</label>
         <input id="watchDate" type="date" />
-
         <input id="watchPrice" type="number" placeholder="見ている株価" />
         <input id="targetBuyPrice" type="number" placeholder="買いたい価格" />
         <input id="takeProfitPrice" type="number" placeholder="利確目安" />
         <input id="stopLossPrice" type="number" placeholder="損切り目安" />
-
         <select id="watchStatus">
           <option value="👀 様子見">👀 様子見</option>
           <option value="📉 下がったら買いたい">📉 下がったら買いたい</option>
@@ -73,7 +66,6 @@
           <option value="⚠️ 急落後なので慎重">⚠️ 急落後なので慎重</option>
           <option value="⭐ お気に入り">⭐ お気に入り</option>
         </select>
-
         <textarea id="watchMemo" placeholder="気になる理由・ニュース・チャートの印象"></textarea>
         <button onclick="addWatch()">WATCHに追加する</button>
       </div>
@@ -91,13 +83,10 @@
       <div class="card">
         <h2>買ったつもりシミュレーション</h2>
         <input id="simName" type="text" placeholder="銘柄名 例：東京エレクトロン" />
-
         <label>買ったと仮定した日</label>
         <input id="simBuyDate" type="date" />
-
         <input id="simBuyPrice" type="number" placeholder="仮想買値" />
         <input id="simQuantity" type="number" placeholder="株数" />
-
         <select id="simFeeling">
           <option value="😊 落ち着いて買ったつもり">😊 落ち着いて買ったつもり</option>
           <option value="✨ 上がりそうと思った">✨ 上がりそうと思った</option>
@@ -105,7 +94,6 @@
           <option value="🔥 勢いで買いたくなった">🔥 勢いで買いたくなった</option>
           <option value="⚠️ 迷いながら検証">⚠️ 迷いながら検証</option>
         </select>
-
         <textarea id="simMemo" placeholder="なぜ買ったつもり？検証したいこと"></textarea>
         <button onclick="addSimulation()">シミュレーション開始</button>
       </div>
@@ -123,7 +111,6 @@
         <h2>バックアップ</h2>
         <p class="memo">データを書き出したり、保存したバックアップを読み込めます。</p>
         <button onclick="exportBackup()">バックアップを書き出す</button>
-
         <label class="small-btn file-label">
           バックアップを読み込む
           <input type="file" id="backupFile" accept=".json" onchange="importBackup(event)" hidden>
