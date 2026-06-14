@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ふわっと STOCK WATCH Pro</title>
-  <link rel="stylesheet" href="style.css?v=2" />
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
   <div class="app">
@@ -12,6 +12,19 @@
       <h1>🌸 ふわっと STOCK WATCH Pro</h1>
       <p>実取引・WATCH・シミュレーション・成績表</p>
     </header>
+
+    <div class="card backup-card">
+      <div id="backupReminder"></div>
+      <h2>バックアップ</h2>
+      <p class="memo">データを書き出したり、保存したバックアップを読み込めます。</p>
+      <div class="button-row">
+        <button onclick="exportBackup()">バックアップを書き出す</button>
+        <label class="small-btn file-label">
+          バックアップを読み込む
+          <input type="file" id="backupFile" accept=".json" onchange="importBackup(event)" hidden>
+        </label>
+      </div>
+    </div>
 
     <nav class="tabs">
       <button class="tab active" onclick="showTab(event, 'trade')">実取引</button>
@@ -105,17 +118,6 @@
     <section id="summary" class="tab-content">
       <h2>銘柄別まとめ</h2>
       <div id="stockSummaryList"></div>
-
-      <div class="card">
-        <div id="backupReminder"></div>
-        <h2>バックアップ</h2>
-        <p class="memo">データを書き出したり、保存したバックアップを読み込めます。</p>
-        <button onclick="exportBackup()">バックアップを書き出す</button>
-        <label class="small-btn file-label">
-          バックアップを読み込む
-          <input type="file" id="backupFile" accept=".json" onchange="importBackup(event)" hidden>
-        </label>
-      </div>
     </section>
 
     <section id="stats" class="tab-content">
@@ -134,6 +136,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>

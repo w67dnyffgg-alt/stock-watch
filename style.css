@@ -12,6 +12,9 @@ header { text-align: center; margin-bottom: 20px; }
 h1 { color: #e86fa8; margin-bottom: 8px; }
 h2 { color: #df78a7; font-size: 20px; margin-top: 24px; }
 header p { color: #a98596; margin: 0; }
+.backup-card { margin-bottom: 22px; }
+.backup-card h2 { margin-top: 0; }
+.backup-card .file-label { margin-top: 0; padding: 13px 16px; }
 
 .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 22px 0; }
 button {

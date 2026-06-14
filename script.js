@@ -183,18 +183,22 @@ function displayTrades() {
     }).join("");
 
     tradeList.innerHTML += `
-      <div class="item">
-        <div class="item-header">
-          <div><div class="item-name">${trade.stockName}</div><div class="date-text">買った日：${trade.buyDate}</div></div>
-          <div>${statusBadge(trade)}<div class="${profitClass(trade.profit)}">${profitText(trade.profit)}</div></div>
-        </div>
+      <details class="item summary-item">
+        <summary class="summary-toggle">
+          <span class="item-header">
+            <span><span class="item-name">${trade.stockName}</span><span class="date-text">買った日：${trade.buyDate}</span></span>
+            <span class="summary-profit"><span>${statusBadge(trade)}</span><span class="${profitClass(trade.profit)}">${profitText(trade.profit)}</span><span class="summary-chevron" aria-hidden="true">⌄</span></span>
+          </span>
+        </summary>
+        <div class="summary-details">
         <div class="info-grid">
           <div class="info-card"><div class="info-title">📦 買い情報</div><div>買値：${yen(trade.buyPrice)}</div><div>株数：${trade.quantity}株</div><div class="badge">${trade.feeling || "感情メモなし"}</div><div class="memo">${trade.memo || "メモなし"}</div><button class="small-btn" onclick="openTradeBuyModal(${trade.id})">買い情報を編集する</button></div>
           <div class="info-card"><div class="info-title">💰 売り情報</div>${trade.sellPrice !== null && trade.sellPrice !== undefined ? `<div>売った日：${trade.sellDate}</div><div>売値：${yen(trade.sellPrice)}</div><div class="${profitClass(trade.profit)}">実損益：${profitText(trade.profit)}</div><button class="small-btn" onclick="openTradeSellModal(${trade.id})">売り情報を編集する</button>` : `<div class="memo">まだ売値は記録されていないよ🌸</div><button class="small-btn" onclick="openTradeSellModal(${trade.id})">売り情報を記録する</button>`}</div>
         </div>
         <div class="button-row"><button class="small-btn" onclick="openTradeLogModal(${trade.id})">途中ログを追加する</button><button class="small-btn" onclick="toggleLogs('${logsId}')">途中ログを見る（${(trade.logs || []).length}件）</button></div>
         <div id="${logsId}" class="collapsible-content">${logsHtml || `<div class="memo">まだ途中経過は記録されていないよ🌸</div>`}</div>
-      </div>`;
+        </div>
+      </details>`;
   });
 
   totalProfit.textContent = yen(total);
@@ -296,7 +300,7 @@ function displayWatches() {
   const watchList = document.getElementById("watchList"); watchList.innerHTML = "";
   if (watches.length === 0) { watchList.innerHTML = `<div class="item empty">まだWATCHリストは空だよ🌸</div>`; return; }
   watches.forEach((watch) => {
-    watchList.innerHTML += `<div class="item"><div class="item-header"><div><div class="item-name">${watch.name}</div><div class="date-text">${watch.date}</div></div><div class="pending">${yen(watch.price)}</div></div><div class="badge">${watch.status}</div><div class="memo">買いたい価格：${watch.targetBuyPrice ? yen(watch.targetBuyPrice) : "未設定"} / 利確目安：${watch.takeProfitPrice ? yen(watch.takeProfitPrice) : "未設定"} / 損切り目安：${watch.stopLossPrice ? yen(watch.stopLossPrice) : "未設定"}</div><div class="memo">${watch.memo || "メモなし"}</div><button class="small-btn" onclick="editWatch(${watch.id})">編集する</button></div>`;
+    watchList.innerHTML += `<details class="item summary-item"><summary class="summary-toggle"><span class="item-header"><span><span class="item-name">${watch.name}</span><span class="date-text">${watch.date}</span></span><span class="summary-profit"><span class="pending">${yen(watch.price)}</span><span class="summary-chevron" aria-hidden="true">⌄</span></span></span></summary><div class="summary-details"><div class="badge">${watch.status}</div><div class="memo">買いたい価格：${watch.targetBuyPrice ? yen(watch.targetBuyPrice) : "未設定"} / 利確目安：${watch.takeProfitPrice ? yen(watch.takeProfitPrice) : "未設定"} / 損切り目安：${watch.stopLossPrice ? yen(watch.stopLossPrice) : "未設定"}</div><div class="memo">${watch.memo || "メモなし"}</div><button class="small-btn" onclick="editWatch(${watch.id})">編集する</button></div></details>`;
   });
 }
 
@@ -350,7 +354,7 @@ function displaySimulations() {
     if (sim.profit !== null && sim.profit !== undefined) { total += sim.profit; fixedCount++; }
     const logsId = `simLogs-${sim.id}`;
     const logsHtml = sim.logs.map((log) => { const diff = (log.price - sim.buyPrice) * sim.quantity; return `<div class="log-box"><strong>${log.date}</strong>：${yen(log.price)}<div class="${profitClass(diff)}">買値との差：${profitText(diff)}</div><div>${log.memo || "メモなし"}</div><button class="small-btn" onclick="openSimLogModal(${sim.id}, ${log.id})">ログ編集</button></div>`; }).join("");
-    simList.innerHTML += `<div class="item"><div class="item-header"><div><div class="item-name">${sim.name}</div><div class="date-text">買ったと仮定した日：${sim.buyDate}</div></div><div>${statusBadge(sim, true)}<div class="${profitClass(sim.profit)}">${profitText(sim.profit)}</div></div></div><div class="info-grid"><div class="info-card"><div class="info-title">📦 仮想買い情報</div><div>仮想買値：${yen(sim.buyPrice)}</div><div>株数：${sim.quantity}株</div><div class="badge">${sim.feeling || "感情メモなし"}</div><div class="memo">${sim.memo || "メモなし"}</div><button class="small-btn" onclick="openSimBuyModal(${sim.id})">買い情報を編集する</button></div><div class="info-card"><div class="info-title">💰 仮想売り情報</div>${sim.sellPrice !== null && sim.sellPrice !== undefined ? `<div>売ったと仮定した日：${sim.sellDate}</div><div>仮想売値：${yen(sim.sellPrice)}</div><div class="${profitClass(sim.profit)}">仮想損益：${profitText(sim.profit)}</div><button class="small-btn" onclick="openSimSellModal(${sim.id})">売り情報を編集する</button>` : `<div class="memo">まだ売値は記録されていないよ🌸</div><button class="small-btn" onclick="openSimSellModal(${sim.id})">売り情報を記録する</button>`}</div></div><div class="button-row"><button class="small-btn" onclick="openSimLogModal(${sim.id})">途中ログを追加する</button><button class="small-btn" onclick="toggleLogs('${logsId}')">途中ログを見る（${sim.logs.length}件）</button></div><div id="${logsId}" class="collapsible-content">${logsHtml || `<div class="memo">まだ途中経過は記録されていないよ🌸</div>`}</div></div>`;
+    simList.innerHTML += `<details class="item summary-item"><summary class="summary-toggle"><span class="item-header"><span><span class="item-name">${sim.name}</span><span class="date-text">買ったと仮定した日：${sim.buyDate}</span></span><span class="summary-profit"><span>${statusBadge(sim, true)}</span><span class="${profitClass(sim.profit)}">${profitText(sim.profit)}</span><span class="summary-chevron" aria-hidden="true">⌄</span></span></span></summary><div class="summary-details"><div class="info-grid"><div class="info-card"><div class="info-title">📦 仮想買い情報</div><div>仮想買値：${yen(sim.buyPrice)}</div><div>株数：${sim.quantity}株</div><div class="badge">${sim.feeling || "感情メモなし"}</div><div class="memo">${sim.memo || "メモなし"}</div><button class="small-btn" onclick="openSimBuyModal(${sim.id})">買い情報を編集する</button></div><div class="info-card"><div class="info-title">💰 仮想売り情報</div>${sim.sellPrice !== null && sim.sellPrice !== undefined ? `<div>売ったと仮定した日：${sim.sellDate}</div><div>仮想売値：${yen(sim.sellPrice)}</div><div class="${profitClass(sim.profit)}">仮想損益：${profitText(sim.profit)}</div><button class="small-btn" onclick="openSimSellModal(${sim.id})">売り情報を編集する</button>` : `<div class="memo">まだ売値は記録されていないよ🌸</div><button class="small-btn" onclick="openSimSellModal(${sim.id})">売り情報を記録する</button>`}</div></div><div class="button-row"><button class="small-btn" onclick="openSimLogModal(${sim.id})">途中ログを追加する</button><button class="small-btn" onclick="toggleLogs('${logsId}')">途中ログを見る（${sim.logs.length}件）</button></div><div id="${logsId}" class="collapsible-content">${logsHtml || `<div class="memo">まだ途中経過は記録されていないよ🌸</div>`}</div></div></details>`;
   });
   simTotalProfit.textContent = yen(total); simTotalProfit.className = profitClass(total); simCount.textContent = `${simulations.length}件 / 確定${fixedCount}件`;
 }
