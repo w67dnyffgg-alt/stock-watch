@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ふわっと STOCK WATCH Pro</title>
-  <link rel="stylesheet" href="style.css?v=3" />
+  <title>STOCK WATCH PRO</title>
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>🌸 ふわっと STOCK WATCH Pro</h1>
-      <p>実取引・WATCH・シミュレーション・成績表</p>
+      <h1>🌸STOCK WATCH　PRO🌸</h1>
     </header>
 
     <div class="card backup-card">
       <div id="backupReminder"></div>
-      <h2>バックアップ</h2>
-      <p class="memo">データを書き出したり、保存したバックアップを読み込めます。</p>
-      <div class="button-row">
+      <div class="backup-heading">
+        <h2>バックアップ</h2>
+        <details class="help-popover">
+          <summary aria-label="バックアップの説明を表示">?</summary>
+          <p>データを書き出したり、保存したバックアップを読み込めます。</p>
+        </details>
+      </div>
+      <div class="backup-actions">
         <button onclick="exportBackup()">バックアップを書き出す</button>
-        <label class="small-btn file-label">
+        <label class="backup-import file-label">
           バックアップを読み込む
           <input type="file" id="backupFile" accept=".json" onchange="importBackup(event)" hidden>
         </label>
@@ -136,6 +140,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>
