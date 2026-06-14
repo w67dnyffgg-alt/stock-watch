@@ -67,6 +67,20 @@ textarea { min-height: 86px; resize: vertical; line-height: 1.6; }
 .log-title { color: #d95b96; font-weight: bold; margin-top: 14px; }
 .form-mini { background: #fffafd; border: 1px dashed #ffc4df; border-radius: 18px; padding: 14px; margin-top: 12px; }
 .summary-section-title { color: #d95b96; font-weight: bold; margin-top: 12px; }
+.summary-item { padding: 0; overflow: hidden; }
+.summary-toggle {
+  padding: 22px; border-radius: 24px; background: transparent; color: #6b4b5b;
+  box-shadow: none; text-align: left;
+}
+.summary-toggle:hover { background: #fff7fb; opacity: 1; }
+.summary-toggle:focus-visible { outline: 3px solid rgba(247, 166, 200, 0.45); outline-offset: -3px; }
+.summary-profit { position: relative; min-width: 108px; padding-right: 24px; text-align: right; }
+.summary-chevron {
+  position: absolute; top: 50%; right: 0; color: #d95b96; font-size: 24px;
+  line-height: 1; transform: translateY(-55%); transition: transform 0.2s ease;
+}
+.summary-toggle.open .summary-chevron { transform: translateY(-45%) rotate(180deg); }
+.summary-details { padding: 0 22px 22px; border-top: 1px solid #ffe3ef; }
 .empty { text-align: center; color: #a98596; padding: 18px; }
 .file-label { display: block; text-align: center; cursor: pointer; }
 
@@ -86,10 +100,14 @@ textarea { min-height: 86px; resize: vertical; line-height: 1.6; }
   .tabs { grid-template-columns: 1fr 1fr; }
   .summary-box, .stats-grid, .info-grid, .button-row { grid-template-columns: 1fr; }
   .item-header { flex-direction: column; }
+  .summary-profit { text-align: left; }
   button { font-size: 14px; }
 }
 @media (max-width: 430px) {
   .tabs { grid-template-columns: 1fr; }
   h1 { font-size: 24px; }
   .card, .item { padding: 16px; }
+  .summary-item { padding: 0; }
+  .summary-toggle { padding: 16px; }
+  .summary-details { padding: 0 16px 16px; }
 }
