@@ -5,8 +5,6 @@ let simulations = JSON.parse(localStorage.getItem("simulations")) || [];
 let editingType = null;
 let editingId = null;
 let editingSubId = null;
-const openStockSummaries = new Set();
-const stockSummaryNames = new Map();
 
 window.onload = function () {
   migrateOldData();
@@ -88,20 +86,6 @@ function toggleLogs(id) {
   const el = document.getElementById(id);
   if (!el) return;
   el.classList.toggle("open");
-}
-
-function toggleStockSummary(id) {
-  const details = document.getElementById(id);
-  const button = document.querySelector(`[aria-controls="${id}"]`);
-  if (!details || !button) return;
-
-  const name = stockSummaryNames.get(id);
-  const isOpen = details.classList.toggle("open");
-  button.setAttribute("aria-expanded", String(isOpen));
-  button.classList.toggle("open", isOpen);
-
-  if (name && isOpen) openStockSummaries.add(name);
-  else if (name) openStockSummaries.delete(name);
 }
 
 /* モーダル */
@@ -416,19 +400,15 @@ function clearSimulationForm() { document.getElementById("simName").value = ""; 
 /* 銘柄別まとめ */
 function displayStockSummary() {
   const stockSummaryList = document.getElementById("stockSummaryList"); stockSummaryList.innerHTML = "";
-  stockSummaryNames.clear();
   const names = new Set(); trades.forEach((t) => names.add(t.stockName)); watches.forEach((w) => names.add(w.name)); simulations.forEach((s) => names.add(s.name));
   if (names.size === 0) { stockSummaryList.innerHTML = `<div class="item empty">まだ銘柄情報はないよ🌸</div>`; return; }
-  Array.from(names).sort().forEach((name, index) => {
+  Array.from(names).sort().forEach((name) => {
     const stockTrades = trades.filter((t) => t.stockName === name); const stockWatches = watches.filter((w) => w.name === name); const stockSims = simulations.filter((s) => s.name === name);
     const realProfit = stockTrades.reduce((sum, t) => sum + (t.profit || 0), 0); const simProfit = stockSims.reduce((sum, s) => sum + (s.profit || 0), 0);
     const tradeHtml = stockTrades.map((t) => `<div class="log-box">${t.buyDate}：買値 ${yen(t.buyPrice)} / ${t.quantity}株<br>${t.sellPrice !== null && t.sellPrice !== undefined ? `売値 ${yen(t.sellPrice)} / <span class="${profitClass(t.profit)}">${profitText(t.profit)}</span>` : "売値未記録"}<br>${t.memo || "メモなし"}<button class="small-btn" onclick="openTradeBuyModal(${t.id})">実取引を編集</button></div>`).join("");
     const watchHtml = stockWatches.map((w) => `<div class="log-box">${w.date}：${w.status}<br>見ている株価：${yen(w.price)}<br>買いたい価格：${w.targetBuyPrice ? yen(w.targetBuyPrice) : "未設定"}<br>${w.memo || "メモなし"}<button class="small-btn" onclick="editWatch(${w.id})">WATCHを編集</button></div>`).join("");
     const simHtml = stockSims.map((s) => `<div class="log-box">${s.buyDate}：仮想買値 ${yen(s.buyPrice)} / ${s.quantity}株<br>${s.sellPrice !== null && s.sellPrice !== undefined ? `売値 ${yen(s.sellPrice)} / <span class="${profitClass(s.profit)}">${profitText(s.profit)}</span>` : "売値未記録"}<br>${s.memo || "メモなし"}<button class="small-btn" onclick="openSimBuyModal(${s.id})">シミュレーションを編集</button></div>`).join("");
-    const summaryId = `stockSummary-${index}`;
-    const isOpen = openStockSummaries.has(name);
-    stockSummaryNames.set(summaryId, name);
-    stockSummaryList.innerHTML += `<div class="item summary-item"><button class="summary-toggle${isOpen ? " open" : ""}" type="button" aria-expanded="${isOpen}" aria-controls="${summaryId}" onclick="toggleStockSummary('${summaryId}')"><div class="item-header"><div><div class="item-name">${name}</div><div class="date-text">実取引${stockTrades.length}件 / WATCH${stockWatches.length}件 / シミュレーション${stockSims.length}件</div></div><div class="summary-profit"><div class="${profitClass(realProfit)}">実：${profitText(realProfit)}</div><div class="${profitClass(simProfit)}">仮想：${profitText(simProfit)}</div><span class="summary-chevron" aria-hidden="true">⌄</span></div></div></button><div id="${summaryId}" class="collapsible-content summary-details${isOpen ? " open" : ""}"><div class="summary-section-title">実取引</div>${tradeHtml || `<div class="memo">実取引なし</div>`}<div class="summary-section-title">WATCH</div>${watchHtml || `<div class="memo">WATCHなし</div>`}<div class="summary-section-title">シミュレーション</div>${simHtml || `<div class="memo">シミュレーションなし</div>`}</div></div>`;
+    stockSummaryList.innerHTML += `<details class="item summary-item"><summary class="summary-toggle"><span class="item-header"><span><span class="item-name">${name}</span><span class="date-text">実取引${stockTrades.length}件 / WATCH${stockWatches.length}件 / シミュレーション${stockSims.length}件</span></span><span class="summary-profit"><span class="${profitClass(realProfit)}">実：${profitText(realProfit)}</span><span class="${profitClass(simProfit)}">仮想：${profitText(simProfit)}</span><span class="summary-chevron" aria-hidden="true">⌄</span></span></span></summary><div class="summary-details"><div class="summary-section-title">実取引</div>${tradeHtml || `<div class="memo">実取引なし</div>`}<div class="summary-section-title">WATCH</div>${watchHtml || `<div class="memo">WATCHなし</div>`}<div class="summary-section-title">シミュレーション</div>${simHtml || `<div class="memo">シミュレーションなし</div>`}</div></details>`;
   });
 }
 

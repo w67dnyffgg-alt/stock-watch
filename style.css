@@ -46,8 +46,8 @@ input:focus, select:focus, textarea:focus { border-color: #f7a6c8; box-shadow: 0
 textarea { min-height: 86px; resize: vertical; line-height: 1.6; }
 
 .item-header { display: flex; justify-content: space-between; gap: 12px; }
-.item-name { font-weight: bold; color: #d95b96; font-size: 17px; }
-.date-text { color: #a98596; font-size: 13px; margin-top: 4px; }
+.item-name { display: block; font-weight: bold; color: #d95b96; font-size: 17px; }
+.date-text { display: block; color: #a98596; font-size: 13px; margin-top: 4px; }
 .memo { margin-top: 9px; font-size: 14px; line-height: 1.7; color: #806474; }
 .badge { display: inline-block; padding: 5px 10px; border-radius: 999px; background: #fff0f6; color: #d95b96; font-size: 13px; font-weight: bold; margin-top: 8px; }
 .status-badge { display: inline-block; padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: bold; background: #fff0f6; color: #d95b96; }
@@ -69,17 +69,19 @@ textarea { min-height: 86px; resize: vertical; line-height: 1.6; }
 .summary-section-title { color: #d95b96; font-weight: bold; margin-top: 12px; }
 .summary-item { padding: 0; overflow: hidden; }
 .summary-toggle {
-  padding: 22px; border-radius: 24px; background: transparent; color: #6b4b5b;
-  box-shadow: none; text-align: left;
+  display: block; padding: 22px; border-radius: 24px; background: transparent; color: #6b4b5b;
+  box-shadow: none; text-align: left; cursor: pointer; list-style: none; -webkit-tap-highlight-color: transparent;
 }
+.summary-toggle::-webkit-details-marker { display: none; }
 .summary-toggle:hover { background: #fff7fb; opacity: 1; }
 .summary-toggle:focus-visible { outline: 3px solid rgba(247, 166, 200, 0.45); outline-offset: -3px; }
-.summary-profit { position: relative; min-width: 108px; padding-right: 24px; text-align: right; }
+.summary-profit { display: block; position: relative; min-width: 108px; padding-right: 24px; text-align: right; }
+.summary-profit > span:not(.summary-chevron) { display: block; }
 .summary-chevron {
   position: absolute; top: 50%; right: 0; color: #d95b96; font-size: 24px;
   line-height: 1; transform: translateY(-55%); transition: transform 0.2s ease;
 }
-.summary-toggle.open .summary-chevron { transform: translateY(-45%) rotate(180deg); }
+.summary-item[open] .summary-chevron { transform: translateY(-45%) rotate(180deg); }
 .summary-details { padding: 0 22px 22px; border-top: 1px solid #ffe3ef; }
 .empty { text-align: center; color: #a98596; padding: 18px; }
 .file-label { display: block; text-align: center; cursor: pointer; }
