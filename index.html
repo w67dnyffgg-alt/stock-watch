@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>STOCK WATCH PRO</title>
-  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="style.css?v=5" />
 </head>
 <body>
   <div class="app">
@@ -44,8 +44,9 @@
         <div><span>実取引数</span><strong id="tradeCount">0件</strong></div>
       </div>
 
-      <div class="card">
-        <h2>実際に買った株を記録</h2>
+      <details class="card form-card">
+        <summary class="form-toggle"><span>✏️ 実際に買った株を記録</span><span class="form-chevron">⌄</span></summary>
+        <div class="form-body">
         <input id="stockName" type="text" placeholder="銘柄名 例：東京エレクトロン" />
         <label>買った日</label>
         <input id="tradeBuyDate" type="date" />
@@ -60,15 +61,17 @@
         </select>
         <textarea id="memo" placeholder="なぜ買った？買った時の理由・感情メモ"></textarea>
         <button onclick="addTrade()">買った株を記録する</button>
-      </div>
+        </div>
+      </details>
 
       <h2>実取引履歴</h2>
       <div id="tradeList"></div>
     </section>
 
     <section id="watch" class="tab-content">
-      <div class="card">
-        <h2>気になる株メモ</h2>
+      <details class="card form-card">
+        <summary class="form-toggle"><span>✏️ 気になる株メモ</span><span class="form-chevron">⌄</span></summary>
+        <div class="form-body">
         <input id="watchName" type="text" placeholder="銘柄名 例：ANYCOLOR" />
         <label>記録日</label>
         <input id="watchDate" type="date" />
@@ -85,7 +88,8 @@
         </select>
         <textarea id="watchMemo" placeholder="気になる理由・ニュース・チャートの印象"></textarea>
         <button onclick="addWatch()">WATCHに追加する</button>
-      </div>
+        </div>
+      </details>
 
       <h2>WATCHリスト</h2>
       <div id="watchList"></div>
@@ -97,8 +101,9 @@
         <div><span>シミュレーション数</span><strong id="simCount">0件</strong></div>
       </div>
 
-      <div class="card">
-        <h2>買ったつもりシミュレーション</h2>
+      <details class="card form-card">
+        <summary class="form-toggle"><span>✏️ 買ったつもりシミュレーション</span><span class="form-chevron">⌄</span></summary>
+        <div class="form-body">
         <input id="simName" type="text" placeholder="銘柄名 例：東京エレクトロン" />
         <label>買ったと仮定した日</label>
         <input id="simBuyDate" type="date" />
@@ -113,7 +118,8 @@
         </select>
         <textarea id="simMemo" placeholder="なぜ買ったつもり？検証したいこと"></textarea>
         <button onclick="addSimulation()">シミュレーション開始</button>
-      </div>
+        </div>
+      </details>
 
       <h2>シミュレーション履歴</h2>
       <div id="simList"></div>
@@ -140,6 +146,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
